@@ -22,6 +22,8 @@ public class JwtService {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .setIssuedAt(new java.util.Date())
+                .setExpiration(new java.util.Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 30 minutes
                 .signWith(getKey())
                 .compact();
     }

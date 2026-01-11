@@ -35,8 +35,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
@@ -55,13 +55,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     .parseClaimsJws(token)
                     .getBody();
 
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                            claims.getSubject(), null, Collections.emptyList());
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    claims.getSubject(), null, Collections.emptyList());
 
             SecurityContextHolder.getContext().setAuthentication(auth);
 
         } catch (Exception e) {
+            System.out.println("Error validating JWT: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
